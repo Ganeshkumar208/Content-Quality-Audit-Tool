@@ -11,7 +11,7 @@ import { Loader2, Link2, FileText, CheckCircle2 } from "lucide-react"
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false })
 
 interface AuditFormProps {
-  onSubmit: (content: string, keyword: string) => void
+  onSubmit: (data: { content?: string; url?: string; keyword?: string }) => void
   isLoading: boolean
 }
 
@@ -22,17 +22,22 @@ export default function AuditForm({ onSubmit, isLoading }: AuditFormProps) {
   const [url, setUrl] = useState("")
 
   const handleSubmit = () => {
-    if (activeTab === "text" && text.trim() && keyword.trim()) {
-      onSubmit(text, keyword)
+    if (activeTab === "text" && text.trim()) {
+      onSubmit({
+        content: text,
+        keyword: keyword.trim() || undefined
+      })
     } else if (activeTab === "url" && url.trim()) {
-      onSubmit(url, "")
+      onSubmit({
+        url: url,
+        keyword: keyword.trim() || undefined
+      })
     }
   }
 
-  const isValid =
-    activeTab === "text"
-      ? text.replace(/<[^>]+>/g, "").trim().length > 0 && keyword.trim().length > 0
-      : url.trim().length > 0
+  const isValid = activeTab === "text"
+    ? text.replace(/<[^>]+>/g, "").trim().length > 0
+    : url.trim().length > 0
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900/50">
@@ -94,7 +99,6 @@ export default function AuditForm({ onSubmit, isLoading }: AuditFormProps) {
 
                 <div className="mb-8">
                   {activeTab === "text" ? (
-
                     <div>
                       <label className="block text-sm font-semibold text-foreground mb-3">
                         Paste your content
@@ -110,7 +114,7 @@ export default function AuditForm({ onSubmit, isLoading }: AuditFormProps) {
                       </div>
 
                       <label className="block text-sm font-semibold text-foreground mt-4 mb-2">
-                        Target Keyword
+                        Target Keyword (Optional)
                       </label>
                       <Input
                         type="text"
@@ -134,6 +138,18 @@ export default function AuditForm({ onSubmit, isLoading }: AuditFormProps) {
                         placeholder="https://example.com/article"
                         className="h-12 border border-border bg-muted text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary rounded-xl"
                       />
+
+                      <label className="block text-sm font-semibold text-foreground mt-4 mb-2">
+                        Target Keyword (Optional)
+                      </label>
+                      <Input
+                        type="text"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
+                        placeholder="Enter keyword to analyze (e.g. AI business adoption)"
+                        className="h-12 border border-border bg-muted text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary rounded-xl"
+                      />
+
                       <p className="text-xs text-muted-foreground mt-2">
                         We'll fetch and analyze the content from this URL
                       </p>

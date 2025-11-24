@@ -82,6 +82,7 @@ import { ReadabilityAnalyzer } from './analyzers/readability.analyzer';
 import { GrammarAnalyzer } from './analyzers/grammar.analyzer';
 import { ClarityAnalyzer } from './analyzers/clarity.analyzer';
 import { StructureAnalyzer } from './analyzers/structure.analyzer';
+import { PlaywrightScraper } from './scraper/url-scraper';
 
 @Module({
   imports: [
@@ -99,6 +100,7 @@ import { StructureAnalyzer } from './analyzers/structure.analyzer';
     GrammarAnalyzer,
     ClarityAnalyzer,
     StructureAnalyzer,
+    PlaywrightScraper,
   ],
 })
 export class AuditModule { }

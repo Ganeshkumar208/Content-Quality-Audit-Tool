@@ -18,7 +18,6 @@
 
 
 
-
 import { Controller, Post, Body } from '@nestjs/common';
 import { AuditService } from './audit.service';
 import { CreateAuditDto } from './dto/create-audit.dto';
@@ -29,13 +28,27 @@ export class AuditController {
 
     @Post('analyze')
     async analyze(@Body() dto: CreateAuditDto) {
-
-        if (!dto.content || dto.content.trim().length === 0) {
+        // Validate that either content or URL is provided
+        if ((!dto.content || dto.content.trim().length === 0) && (!dto.url || dto.url.trim().length === 0)) {
             return {
-                error: 'Content is required for analysis',
+                error: 'Either content or URL is required for analysis',
             };
         }
 
-        return this.auditService.analyzeContent(dto.content, dto.keyword);
+        if (dto.url && dto.url.trim().length > 0) {
+            try {
+                new URL(dto.url);
+            } catch (error) {
+                return {
+                    error: 'Invalid URL format',
+                };
+            }
+        }
+
+        return this.auditService.analyze({
+            content: dto.content,
+            url: dto.url,
+            keyword: dto.keyword
+        });
     }
 }

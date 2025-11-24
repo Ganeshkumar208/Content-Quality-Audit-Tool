@@ -61,8 +61,6 @@
 
 
 
-
-// src/entities/audit.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity('audit_reports')
@@ -75,6 +73,9 @@ export class Audit {
 
     @Column({ type: 'varchar', length: 255, nullable: true })
     keyword: string;
+
+    @Column({ type: 'varchar', length: 500, nullable: true })
+    url?: string;
 
     @Column({ type: 'json' })
     seo: any;
@@ -109,4 +110,3 @@ export class Audit {
     @CreateDateColumn()
     createdAt: Date;
 }
-

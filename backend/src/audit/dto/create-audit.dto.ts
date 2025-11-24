@@ -13,8 +13,11 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAuditDto {
     @ApiProperty()
-    content: string;
+    content?: string;
 
     @ApiProperty()
     keyword?: string;
+
+    @ApiProperty()
+    url?: string;
 }
