@@ -91,30 +91,92 @@ export default function AuditResults({ data, onBack }: AuditResultsProps) {
   return (
     <div className="bg-background">
       {/* Full Screen Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Back Button - Positioned at top */}
         <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
-          <Button
-            onClick={onBack}
-            variant="ghost"
-            size="sm"
-            className="text-muted-foreground hover:text-foreground rounded-full"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
+          <div className="flex items-center gap-2 bg-background/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-border">
+            <Button
+              onClick={onBack}
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground rounded-full h-8 w-8 p-0"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <span className="text-sm font-medium text-foreground">
+              Back to Audit
+            </span>
+          </div>
         </div>
 
-        <motion.div
-          className="w-full max-w-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <OverallScore score={data.overallScore} onArrowClick={scrollToCharts} />
-        </motion.div>
+        {/* Main Content - Side by Side Layout */}
+        <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-center" >
+          {/* Left Column - Key Metrics */}
+          <div className="lg:col-span-1 space-y-25" style={{ marginLeft: '30px' }}>
+            {/* Primary Keyword Card */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.5 }}
+            >
+              <Card className="border border-border bg-gradient-to-br from-primary/12 to-transparent p-6 shadow-sm hover:shadow-md transition-all">
+                <div className="space-y-3">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Primary Keyword</p>
+                  <p className="text-lg sm:text-xl font-semibold text-foreground line-clamp-2">{data.keyword}</p>
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* SERP Prediction */}
+            {data.serp?.predictedRanking && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 1.5 }}
+              >
+                <Card className="border border-border bg-gradient-to-br from-accent/12 to-transparent p-6 shadow-sm hover:shadow-md transition-all">
+                  <div className="space-y-3">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4" />
+                      SERP Prediction
+                    </p>
+                    <p className="text-base sm:text-lg font-semibold text-foreground">{data.serp.predictedRanking}</p>
+                  </div>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* Content Status */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.5 }}
+            >
+              <Card className="border border-border bg-gradient-to-br from-emerald-500/12 to-transparent p-6 shadow-sm hover:shadow-md transition-all">
+                <div className="space-y-3">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Status</p>
+                  <p className="text-base sm:text-lg font-semibold text-foreground">
+                    {data.overallScore >= 75 ? "Excellent" : data.overallScore >= 50 ? "Good" : "Needs Work"}
+                  </p>
+                </div>
+              </Card>
+            </motion.div>
+          </div>
+
+          {/* Right Column - Overall Score */}
+          <div className="lg:col-span-2 flex justify-center lg:justify-end" style={{ marginRight: '95px' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <OverallScore score={data.overallScore} onArrowClick={scrollToCharts} />
+            </motion.div>
+          </div>
+        </div>
       </section>
 
-      {/* Charts Section - Triggered by scroll */}
+      {/* Rest of your existing code remains the same... */}
       <section
         ref={chartsRef}
         className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30 px-4 sm:px-6 lg:px-8 py-12 sm:py-16"
@@ -130,52 +192,6 @@ export default function AuditResults({ data, onBack }: AuditResultsProps) {
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Performance Analysis</h2>
             <p className="text-muted-foreground">Deep dive into your content audit metrics</p>
-          </motion.div>
-
-          {/* Key Metrics Row */}
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {/* Primary Keyword Card */}
-            <motion.div variants={chartVariants}>
-              <Card className="border border-border bg-gradient-to-br from-primary/5 to-transparent p-6 shadow-sm hover:shadow-md transition-all h-full">
-                <div className="space-y-3">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Primary Keyword</p>
-                  <p className="text-lg sm:text-xl font-semibold text-foreground line-clamp-2">{data.keyword}</p>
-                </div>
-              </Card>
-            </motion.div>
-
-            {/* SERP Prediction */}
-            {data.serp?.predictedRanking && (
-              <motion.div variants={chartVariants}>
-                <Card className="border border-border bg-gradient-to-br from-accent/5 to-transparent p-6 shadow-sm hover:shadow-md transition-all h-full">
-                  <div className="space-y-3">
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4" />
-                      SERP Prediction
-                    </p>
-                    <p className="text-base sm:text-lg font-semibold text-foreground">{data.serp.predictedRanking}</p>
-                  </div>
-                </Card>
-              </motion.div>
-            )}
-
-            {/* Content Status */}
-            <motion.div variants={chartVariants}>
-              <Card className="border border-border bg-gradient-to-br from-emerald-500/5 to-transparent p-6 shadow-sm hover:shadow-md transition-all h-full">
-                <div className="space-y-3">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Status</p>
-                  <p className="text-base sm:text-lg font-semibold text-foreground">
-                    {data.overallScore >= 75 ? "Excellent" : data.overallScore >= 50 ? "Good" : "Needs Work"}
-                  </p>
-                </div>
-              </Card>
-            </motion.div>
           </motion.div>
 
           {/* Charts Section */}
@@ -327,4 +343,5 @@ export default function AuditResults({ data, onBack }: AuditResultsProps) {
       </section>
     </div>
   )
+
 }

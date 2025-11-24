@@ -111,7 +111,7 @@ export default function ChartDimensionScores({ data }: ChartDimensionScoresProps
 
         {/* Statistics Footer */}
         <div className="mt-6 pt-4 border-t border-border/50">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-1">
             <motion.div
               className="text-center"
               initial={{ opacity: 0, scale: 0.9 }}
