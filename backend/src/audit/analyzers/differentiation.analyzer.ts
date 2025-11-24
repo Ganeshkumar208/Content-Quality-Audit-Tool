@@ -20,6 +20,7 @@ Return JSON ONLY:
 {
   "score": number,
   "issues": [string],
+  "goodat":[string],
   "recommendations": [string]
 }
 
@@ -37,7 +38,11 @@ ${content}
         const cleaned = raw.replace(/```json|```/g, "").trim();
 
         try {
-            return JSON.parse(cleaned);
+            const parsed = JSON.parse(cleaned);
+            return {
+                ...parsed,
+                recommendations: parsed.recommendations?.slice(0, 3) ?? []
+            };
         } catch {
             return {
                 score: 0,

@@ -18,10 +18,13 @@ Check the text for:
 - Repeated phrases
 - Sentence correctness
 
+Score from 0–100, where 100 means perfect grammar and 0 means extremely poor grammar.
+
 Return JSON ONLY in this strict format:
 {
   "score": number,
   "issues": [string],
+  "goodat":[string],
   "recommendations": [string]
 }
 
@@ -35,12 +38,15 @@ ${content}
             temperature: 0.2,
         });
 
-        // return JSON.parse(response.choices[0].message.content);
         const raw = response.choices[0].message.content ?? '{}';
         const cleaned = raw.replace(/```json|```/g, '').trim();
 
         try {
-            return JSON.parse(cleaned);
+            const parsed = JSON.parse(cleaned);
+            return {
+                ...parsed,
+                recommendations: parsed.recommendations?.slice(0, 3) ?? []
+            };
         } catch {
             return {
                 score: 0,
