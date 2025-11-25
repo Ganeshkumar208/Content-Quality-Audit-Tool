@@ -83,6 +83,7 @@ import { GrammarAnalyzer } from './analyzers/grammar.analyzer';
 import { ClarityAnalyzer } from './analyzers/clarity.analyzer';
 import { StructureAnalyzer } from './analyzers/structure.analyzer';
 import { PlaywrightScraper } from './scraper/url-scraper';
+import { ValidatorAnalyzer } from './analyzers/validator.analyzer';
 
 @Module({
   imports: [
@@ -100,6 +101,7 @@ import { PlaywrightScraper } from './scraper/url-scraper';
     GrammarAnalyzer,
     ClarityAnalyzer,
     StructureAnalyzer,
+    ValidatorAnalyzer,
     PlaywrightScraper,
   ],
 })
