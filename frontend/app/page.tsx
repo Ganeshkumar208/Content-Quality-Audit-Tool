@@ -37,7 +37,6 @@ export default function Home() {
       setAuditData(result)
     } catch (error) {
       console.error("Audit failed:", error)
-      // Show error to user
       alert(`Audit failed: ${error}`)
     } finally {
       setIsLoading(false)

@@ -71,7 +71,6 @@ export class PlaywrightScraper {
         const page = await context.newPage();
 
         try {
-            // Set longer timeout and use different wait strategy
             await page.goto(url, {
                 timeout: 45000, // 45 seconds
                 waitUntil: 'domcontentloaded' // Faster than 'networkidle'
@@ -128,54 +127,3 @@ export class PlaywrightScraper {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-// // src/audit/scrapers/playwright.scraper.ts
-// import { Injectable } from '@nestjs/common';
-// import { chromium } from 'playwright';
-
-// @Injectable()
-// export class PlaywrightScraper {
-//     async scrape(url: string) {
-//         const browser = await chromium.launch({
-//             headless: true,
-//         });
-
-//         const page = await browser.newPage();
-
-//         await page.goto(url, { waitUntil: 'networkidle' });
-
-//         // Extract structured content
-//         const result = await page.evaluate(() => {
-//             const getText = (selector: string) =>
-//                 Array.from(document.querySelectorAll(selector))
-//                     .map(el => el.textContent?.trim())
-//                     .filter(Boolean) as string[];
-
-//             return {
-//                 title: document.querySelector('h1')?.textContent?.trim() || '',
-//                 headings: [
-//                     ...getText('h1'),
-//                     ...getText('h2'),
-//                     ...getText('h3'),
-//                 ],
-//                 bold: getText('b,strong'),
-//                 paragraphs: getText('p'),
-//                 bullets: getText('ul li'),
-//                 numbers: getText('ol li'),
-//                 fullText: document.body.innerText.trim(),
-//             };
-//         });
-
-//         await browser.close();
-
-//         return result;
-//     }
-// }

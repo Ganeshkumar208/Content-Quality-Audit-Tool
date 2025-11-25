@@ -61,12 +61,16 @@ export default function AuditForm({ onSubmit, isLoading }: AuditFormProps) {
           <div className="w-full max-w-2xl">
             {/* Hero Section */}
             <div className="text-center mb-12">
-              <div className="inline-block bg-gradient-to-br from-primary/20 to-primary/10 text-primary rounded-2xl p-4 mb-6">
+              {/* <div className="inline-block bg-gradient-to-br from-primary/20 to-primary/10 text-primary rounded-2xl p-4 mb-6">
                 <FileText className="w-12 h-12" />
+              </div> */}
+              <div className="flex items-center gap-3 mb-4">
+                <FileText className="w-12 h-12 text-foreground" style={{ marginLeft: '100px' }} />
+                <h1 className="text-2xl md:text-4xl font-bold text-foreground leading-tight text-balance">
+                  Analyze Your Content
+                </h1>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4 leading-tight text-balance">
-                Analyze Your Content
-              </h1>
+
               <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
                 Get comprehensive insights across 9 dimensions including SEO, SERP performance, readability, and more
               </p>
