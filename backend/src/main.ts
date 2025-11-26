@@ -11,8 +11,8 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
-    .setTitle('AUTO-EXPERT')
-    .setDescription('A solution from Schemax')
+    .setTitle('Content Audit Tool')
+    .setDescription('A Solution for the Content Creators, Bloggers Etc.,')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
